@@ -1,0 +1,10 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install: # before running test or deploy do necessary steps
+  - docker build -t nlwin/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true nlwin/docker-react npm run test
