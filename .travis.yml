@@ -3,8 +3,20 @@ sudo: required
 services:
   - docker
 
-before_install: # before running test or deploy do necessary steps
+before_install: # before running script or deploy do necessary steps
   - docker build -t nlwin/docker-react -f Dockerfile.dev .
 
 script:
   - docker run -e CI=true nlwin/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-2'
+  app: 'docker-react'
+  env: 'DockerReact-env'
+  bucket_name: 'elasticbeanstalk-us-east-2-251564583159'
+  bucket_path: 'docker-react'
+  on:
+    branch: master
+    acccess_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
